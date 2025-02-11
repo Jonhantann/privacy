@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>HTML</title>
+  
+  <!-- HTML -->
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  
+  <!-- Project -->
+  <script src="main.js"></script>
+  
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js";
+      import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyC8JLrfeTj6rtxsCZTXEeYhtkgKE84FgJs",
+        authDomain: "winxs-61604.firebaseapp.com",
+        databaseURL: "https://winxs-61604-default-rtdb.firebaseio.com",
+        projectId: "winxs-61604",
+        storageBucket: "winxs-61604.appspot.com",
+        messagingSenderId: "387112146481",
+        appId: "1:387112146481:web:6c40338d5511e667232710",
+        measurementId: "G-9FZN1HJHJJ"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      window.verificarCodigo = function() {
+       
+        let codigo = document.getElementById("codigo").value.trim();
+        if (!codigo) {
+          alert("Digite um código válido.");
+          return;
+       
+        }
+
+        get(ref(database, "codigos/" + codigo)).then(snapshot => {
+          if (snapshot.exists() && snapshot.val().ativo) {
+            localStorage.setItem("acesso_liberado", "true");
+          localStorage.setItem("codigo_entrada", codigo);  // Armazenando o código no localStorage
+            abrirCatalogo();
+          } else if (codigo === "HOT696🔥") {
+            ativarPreviaCatalogo();
+          } else {
+            alert("Código inválido ou já utilizado.");
+          }
+        });
+      };
+
+      function abrirCatalogo() {
+        document.getElementById("inicial").classList.add("hidden");
+        document.getElementById("conteudo").classList.remove("hidden");
+      }
+
+      window.ativarPreviaCatalogo = function() {
+        abrirCatalogo();
+        setTimeout(() => {
+          logout();
+        }, 10000);
+      };
+
+      window.logout = function() {
+        localStorage.removeItem("acesso_liberado");
+        location.reload();
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("acesso_liberado")) {
+          abrirCatalogo();
+        }
+      });
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff0055, #ff3300);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 200px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 20px;
+            transition: 0.3s;
+            margin: 10px;
+        }
+        
+        #voltar-btn {
+            background: linear-gradient(45deg, black, black);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 200px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 20px;
+            transition: 0.3s;
+            margin: 10px;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #ff3300, #ff0055);
+            transform: scale(1.05);
+        }
+
+        .catalogo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+     .footer {
+       margin-top: 20px;
+       color: #777;
+       font-size: 12px;
+     }
+        .imagem-catalogo {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .imagem-container {
+            margin: 10px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-download {
+            background: #ff0055;
+            color: white;
+            border: none;
+            padding: 8px;
+            width: 100px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            background: #ff3300;
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            text-align: center;
+            font-size: 16px;
+            width: 180px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            color: #777;
+            font-size: 12px;
+        }
+
+        a {
+            color: #ff0055;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .aviso-legal {
+            background: #333;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .aviso-legal h4 {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo para ampliar a imagem ao clicar */
+        .imagem-expandida {
+            width: 70%;
+            height: auto;
+            max-width: 800px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: auto;
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #111;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .modal-content img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-download-modal {
+            background: #ff0055;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            cursor: pointer;
+        }
+
+        .btn-download-modal:hover {
+            background: #ff3300;
+            transform: scale(1.05);
+        }
+
+        /* Prévia aberta com imagens alinhadas na mesma linha */
+        .catalogo-previa {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recrutamento de Modelos Verificadas</title>
+
+    <style>
+        /* Fundo escuro do popup */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: flex;
+        }
+
+        /* Conteúdo do popup */
+        .popup-content {
+            background: deeppink;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            width: 90%;
+            max-width: 420px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .popup-content h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .popup-content p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        /* Botão estilizado */
+        .popup-content .botao {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #ff4081;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        .popup-content .botao:hover {
+            background: #ff1c6b;
+            transform: scale(1.05);
+        }
+
+        /* Botão de fechar */
+        .popup-content .fechar {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 25px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .popup-content .fechar:hover {
+            opacity: 0.7;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Ícone de verificado */
+        .verificado {
+            width: 22px;
+            height: 22px;
+            fill: #1DA1F2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Popup de Recrutamento -->
+    <div id="popup-recrutamento" class="popup">
+        <div class="popup-content">
+            <span class="fechar">&times;</span>
+            <h2>Seja uma Verificada!  
+                <svg class="verificado" viewBox="0 0 24 24">
+                    <path d="M22 12l-2.55-2 .64-3.08-3.07-.64-2-2.54L12 4.5l-3.08-.64-2 2.54-3.07.64.64 3.08L2 12l2.55 2-.64 3.08 3.07.64 2 2.54L12 19.5l3.08.64 2-2.54 3.07-.64-.64-3.08L22 12zm-11 4.59l-3.59-3.59L9 11.41l2 2 4-4 1.41 1.41-5.41 5.41z"/>
+                </svg>
+            </h2>
+            <p>Estamos recrutando garotas para se tornarem verificadas no site. Tenha acesso exclusivo e receba parte dos lucros!</p>
+            <a href="https://wa.me/5585997374043?text=Olá,%20tenho%20interesse%20em%20me%20tornar%20uma%20modelo%20verificada.%20Poderia%20me%20passar%20mais%20detalhes?" class="botao" target="_blank">Saiba Mais</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let popup = document.getElementById("popup-recrutamento");
+            let fecharBtn = document.querySelector(".fechar");
+
+            function mostrarPopup() {
+                popup.style.opacity = "1";
+                popup.style.visibility = "visible";
+            }
+
+            function esconderPopup() {
+                popup.style.opacity = "0";
+                popup.style.visibility = "hidden";
+                localStorage.setItem("ultimoPopup", Date.now());
+            }
+
+            fecharBtn.addEventListener("click", esconderPopup);
+
+            // Exibir o popup automaticamente a cada 3 dias
+            let ultimoPopup = localStorage.getItem("ultimoPopup");
+            let agora = Date.now();
+            let tresDias = 3 * 24 * 60 * 60 * 1000;
+
+            if (!ultimoPopup || agora - ultimoPopup > tresDias) {
+                setTimeout(mostrarPopup, 5000);
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+
+    <div id="inicial">
+        <h2>Catálogo Exclusivo 🔥</h2>
+        <p>Valor: <strong>R$ 10,00 (pagamento único)</strong></p>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copiar Chave Pix</title>
+    <style>
+        #aviso {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        <strong>Chave Pix:</strong>
+        <span id="chave-pix" onclick="copiarTexto()">85997374043</span>
+    </p>
+    <div id="aviso">Chave Pix copiada!</div>
+
+    <script>
+        function copiarTexto() {
+            const chavePix = document.getElementById('chave-pix').innerText;
+            navigator.clipboard.writeText(chavePix).then(function() {
+                const aviso = document.getElementById('aviso');
+                aviso.style.display = 'block';
+                setTimeout(function() {
+                    aviso.style.opacity = 1;
+                }, 50); // Ensures the popup appears immediately after being shown
+
+                setTimeout(function() {
+                    aviso.style.opacity = 0;
+                    setTimeout(function() {
+                        aviso.style.display = 'none';
+                    }, 300); // Ensures the popup disappears smoothly
+                }, 2000); // Esconde o aviso após 2 segundos
+            }).catch(function(error) {
+                console.error('Erro ao copiar o texto: ', error);
+            });
+        }
+    </script>
+</body>
+</html>
+
+        <h3>🔑 Insira o Código</h3>
+<input type="text" id="codigo" placeholder="Digite seu código">
+<button onclick="verificarCodigo()" class="botao">🔓 Liberar Acesso</button>
+
+<style>
+  .botao {
+    border-radius: 10px 0 10px 0; /* Arredonda apenas dois lados opostos */
+    padding: 10px 20px;
+    border: none;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+  }
+
+  .botao:hover {
+    background-color: #555;
+  }
+</style>
+        
+        <h3>Prévias do Conteúdo 💋</h3>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copiar Código</title>
+    <style>
+        body {
+            
+        }
+        .codigo {
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none; /* Remove qualquer decoração */
+            user-select: none;
+        }
+        .aviso {
+            position: fixed;
+            z-index: 1;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #fff;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .aviso.ativo {
+            opacity: 1;
+            visibility: visible;
+        }
+        .icone {
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+</head>
+<body>
+  
+    <p>Para ter acesso ilimitado por alguns segundos, insira o código:  
+        <strong class="codigo" onclick="copiarCodigo()">HOT696🔥</strong>
+    </p>
+    
+    <div id="aviso-copiado" class="aviso">
+        <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" class="icone" alt="✔">
+        Código copiado!
+    </div>
+
+    <script>
+        function copiarCodigo() {
+            const codigo = document.querySelector('.codigo').innerText;
+            navigator.clipboard.writeText(codigo).then(() => {
+                const aviso = document.getElementById('aviso-copiado');
+                aviso.classList.add('ativo');
+
+                setTimeout(() => {
+                    aviso.classList.remove('ativo');
+                }, 2000);
+            }).catch(error => {
+                console.error('Erro ao copiar o código:', error);
+            });
+        }
+    </script>
+
+</body>
+</html>
+
+        <div id="previa" class="hidden">
+            <h3>⏳ Prévia Ativada (30s)</h3>
+            <div class="catalogo-previa">
+                <img src="link-previa-1.jpg" class="imagem-catalogo" onclick="expandirImagem(this)">
+                <img src="link-previa-2.jpg" class="imagem-catalogo" onclick="expandirImagem(this)">
+                <img src="link-previa-3.jpg" class="imagem-catalogo" onclick="expandirImagem(this)">
+            </div>
+        </div>
+
+<!-- Prévia Aberta Sempre Visível -->
+<h3 class="fade-in">🔗 Prévia Aberta</h3>
+<div class="catalogo-previa">
+    <img src="https://ei.phncdn.com/pics/albums/076/356/601/835861411/(m=e-yaaGqaq)(mh=30xoIMmHacdXQsXM)original_835861411.jpg" class="fade-in imagem-catalogo" onclick="expandirImagem(this)">
+    <img src="https://ei.phncdn.com/pics/albums/071/761/551/828528492/(m=e-yaaGqaq)(mh=qL6-7_ETSg2lpHxG)original_828528492.jpg" class="fade-in meio imagem-catalogo" onclick="expandirImagem(this)">
+    <img src="https://ei.phncdn.com/(m=bJ4hdaaecac)(mh=_kLHw_3eOOhERFQX)8a016881-8c6e-4dca-9ffc-bd4514d828cc.jpg" class="fade-in imagem-catalogo" onclick="expandirImagem(this)">
+</div>
+
+<style>
+    /* Estilos gerais de fade-in e animação */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);  /* Deslocamento inicial mais suave */
+        transition: opacity 2s ease-out, transform 2s ease-out;  /* Duração de 2 segundos para suavizar */
+    }
+
+    .aparecer {
+        opacity: 1;
+        transform: translateY(0);  /* Move para a posição original */
+    }
+
+    /* Efeito de deslizamento para o título */
+    .fade-in-h3 {
+        opacity: 0;
+        transform: translateX(-50px);  /* Início fora da tela */
+        transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+
+    .aparecer-h3 {
+        opacity: 1;
+        transform: translateX(0);  /* Movimento para a posição final */
+    }
+
+    /* Estilo da imagem do meio (mais rápida) */
+    .meio {
+        transition: opacity 1.8s ease-out, transform 1.8s ease-out;  /* Menor duração para mais rapidez */
+    }
+</style>
+
+<script>
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            // Adiciona a animação para o título
+            document.querySelector('h3').classList.add('aparecer-h3');
+            // Adiciona a animação para as imagens
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.classList.add('aparecer');
+            });
+        }, 1500); // Atraso de 1.5 segundos para a animação do título
+    });
+</script>
+
+<!-- Modal para expandir a imagem -->
+<div id="modal" class="modal">
+    <span id="close" class="close">&times;</span>
+    <img id="expandedImg" class="expanded-img">
+</div>
+
+<script>
+    function expandirImagem(imgElement) {
+        var modal = document.getElementById("modal");
+        var expandedImg = document.getElementById("expandedImg");
+
+        modal.style.display = "block";
+        expandedImg.src = imgElement.src;
+    }
+
+    document.getElementById("close").onclick = function () {
+        document.getElementById("modal").style.display = "none";
+    };
+</script>
+
+<style>
+    .catalogo-previa {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .imagem-catalogo {
+        width: calc(33.33% - 10px); /* Mantém sempre 3 por linha */
+        height: auto;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .imagem-catalogo:hover {
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 900px) {
+        .imagem-catalogo {
+            width: calc(30% - 10px); /* Reduz levemente em telas médias */
+        }
+    }
+
+    @media (max-width: 600px) {
+        .imagem-catalogo {
+            width: calc(28% - 10px); /* Fica mais proporcional em telas menores */
+        }
+    }
+
+    @media (max-width: 400px) {
+        .imagem-catalogo {
+            width: calc(35% - 10px); /* Ajusta mais em telas muito pequenas */
+        }
+    }
+
+    /* Estilo do modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        overflow: auto;
+        padding-top: 60px;
+        text-align: center;
+    }
+
+    .expanded-img {
+        max-width: 90%;
+        max-height: 90%;
+    }
+
+    .close {
+        color: #fff;
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 36px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: #ff0055;
+    }
+</style>
+
+
+
+
+<style>
+  .acesso-container {
+    
+  }
+
+  h3 {
+    font-size: 1.5em;
+  }
+
+  p {
+    font-size: 1.1em;
+    margin: 10px 0;
+  }
+
+  @media (max-width: 480px) {
+    .acesso-container {
+      padding: 15px;
+    }
+
+    h3 {
+      font-size: 1.3em;
+    }
+
+    p {
+      font-size: 0.9em;
+    }
+  }
+</style>
+
+<div class="acesso-container">
+  <h3>📜 Como Acessar?</h3>
+  <p>1️⃣ Realize o pagamento via Pix.</p>
+  <p>2️⃣ Envie o comprovante para o suporte via PV/Direct.</p>
+  <p>3️⃣ Aguarde a liberação do seu código de acesso.</p>
+  <p>4️⃣ Insira o código na página inicial para acessar o catálogo completo.</p>
+</div>
+    
+        <div class="footer">Conteúdo para maiores de 18 anos</div>
+    </div>
+    
+
+    <!-- Conteúdo do catálogo após acesso liberado -->
+    <div id="conteudo" class="hidden">
+        <h2 style="font-size: 15px;">Conteúdo Desbloqueado 🔓</h2>
+  
+
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copiar Código</title>
+    <style>
+        #popup {
+            position: fixed;
+            z-index: 1;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(50, 50, 50, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        span#codigo-usado {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <p><strong>Código utilizado para acessar:</strong> 
+        <span id="codigo-usado" onclick="copiarCodigo()">ABC123</span>
+    </p>
+
+    <div id="popup">Código copiado para a área de transferência.</div>
+
+    <script>
+        function copiarCodigo() {
+            const codigo = document.getElementById("codigo-usado").textContent;
+            navigator.clipboard.writeText(codigo).then(() => {
+                const popup = document.getElementById("popup");
+                popup.style.display = "block";
+                popup.style.opacity = "1";
+                setTimeout(() => {
+                    popup.style.opacity = "0";
+                    setTimeout(() => popup.style.display = "none", 300);
+                }, 2000);
+            });
+        }
+    </script>
+
+</body>
+</html>
+
+<script>
+    // Quando o conteúdo da página for carregado, execute essa função
+    window.addEventListener("DOMContentLoaded", function() {
+        const codigoEntrada = localStorage.getItem("codigo_entrada");
+        if (codigoEntrada) {
+            // Exibe o código no span
+            document.getElementById("codigo-usado").textContent = codigoEntrada;
+        } else {
+            // Caso o código não tenha sido armazenado
+            document.getElementById("codigo-usado").textContent = "Nenhum código utilizado.";
+        }
+    });
+</script>
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagens Aleatórias no Catálogo</title>
+    <style>
+        .catalogo-customizado {
+            column-count: 5;
+            column-gap: 10px;
+            padding: 10px;
+        }
+
+        .imagem-container-customizada {
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 10px;
+            break-inside: avoid;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .imagem-catalogo-customizada {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 1024px) {
+            .catalogo-customizado {
+                column-count: 4;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .catalogo-customizado {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .catalogo-customizado {
+                column-count: 1;
+            }
+        }
+
+        .modal-customizado {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow: auto;
+            padding-top: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-conteudo {
+            text-align: center;
+        }
+
+        .imagem-expandida-customizada {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .close-customizado {
+            color: #fff;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 36px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-customizado:hover,
+        .close-customizado:focus {
+            color: #ff0055;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .download-botao {
+            display: block;
+            margin-top: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-botao:hover {
+            background-color: #555;
+        }
+
+        .carregar-imagens-btn {
+            display: block;
+            margin-top: 20px;
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .carregar-imagens-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .carregar-imagens-btn:active {
+            transform: scale(0.9);
+        }
+        .carregar-imagens-btn {
+    background: #222; /* Fundo escuro discreto */
+    color: #fff; /* Texto branco para contraste */
+    border: 1px solid #444; /* Borda sutil */
+    padding: 10px 20px;
+    border-radius: 5px; /* Cantos levemente arredondados */
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.carregar-imagens-btn:hover {
+    background: #333; /* Escurece um pouco no hover */
+    border-color: #666;
+}
+    </style>
+</head>
+<body>
+    <div class="catalogo-customizado" id="catalogo-imagens">
+        <!-- As imagens serão geradas dinamicamente aqui -->
+    </div>
+
+    <button class="carregar-imagens-btn" id="carregar-imagens">Carregar mais imagens</button>
+
+    <div id="modal-imagem-expandida" class="modal-customizado">
+        <span id="fechar-modal" class="close-customizado">&times;</span>
+        <div class="modal-conteudo">
+            <img id="imagem-expandida" class="imagem-expandida-customizada">
+            <a id="download-btn" class="download-botao" href="#" download>Baixar Imagem</a>
+        </div>
+    </div>
+
+    <script>
+        const images = [
+            "https://images2.imgbox.com/17/47/hw0saJ4H_o.jpg",
+            "https://images2.imgbox.com/b7/a1/BEQcEM5s_o.jpg",
+            "https://images2.imgbox.com/54/9b/3sS0fDQy_o.jpg",
+            "https://ei.phncdn.com/pics/albums/0000/7925/9645/854706415/(m=bJ4hdaaecac)(mh=7gD-qUc75MZHQdHe)original_854706415.jpg",
+            "https://ei.phncdn.com/pics/albums/060/587/391/705376492/(m=e-yaaGqaq)(mh=LMKqlzHFg0O3iGgU)original_705376492.jpg",
+            "https://ei.phncdn.com/pics/albums/034/737/251/700834711/(m=e-yaaGqaq)(mh=u9wuvp_MaewOV9Re)original_700834711.jpg",
+            "https://ei.phncdn.com/pics/albums/034/737/251/702776471/(m=e-yaaGqaq)(mh=B-i5kG2yHuVWpOxm)original_702776471.jpg",
+            "https://ei.phncdn.com/pics/albums/034/737/251/703358971/(m=e-yaaGqaq)(mh=EXuybSWrjJBWLzgU)original_703358971.jpg",
+            "https://images2.imgbox.com/b7/a1/BEQcEM5s_o.jpg",
+            "https://ei.phncdn.com/(m=bJ4hdaaecac)(mh=ZakxQTcxI9r5qI5X)21568626-b2bb-4c20-a04a-44d8ecacfaba.jpg",
+            "https://ei.phncdn.com/pics/albums/075/603/581/832552771/(m=e-yaaGqaq)(mh=fiN7wnKNbHYYsk7g)original_832552771.jpg",
+            "https://ei.phncdn.com/pics/albums/066/849/742/772754632/(m=e-yaaGqaq)(mh=DvcyfB2IiodKB8z0)original_772754632.jpg",
+            "https://ei.phncdn.com/videos/202306/19/433858421/original/(m=eGNdHgaaaa)(mh=7zWa-blLdXMcCiHd)11.jpg",
+            "https://www.tatarada.com.br/wp-content/uploads/2017/07/79-fotos-de-bucetas-com-grelos-grandes-img40.jpg",
+            "https://www.tatarada.com.br/wp-content/uploads/2017/07/79-fotos-de-bucetas-com-grelos-grandes-img40.jpg",
+            "https://www.tatarada.com.br/wp-content/uploads/2017/07/79-fotos-de-bucetas-com-grelos-grandes-img67.jpg",
+            "https://www.tatarada.com.br/wp-content/uploads/2017/07/79-fotos-de-bucetas-com-grelos-grandes-img29.jpg",
+        "https://www.tatarada.com.br/wp-content/uploads/2017/07/79-fotos-de-bucetas-com-grelos-grandes-img20.jpg",
+        "https://www.tatarada.com.br/wp-content/uploads/2017/07/79-fotos-de-bucetas-com-grelos-grandes-img15.jpg",
+        "https://ei.phncdn.com/videos/202302/26/426255461/original/(m=eGNdHgaaaa)(mh=DvmAm8Znq3EiCvZf)16.jpg",
+        "https://ei.phncdn.com/videos/202212/04/420752191/original/(m=eGNdHgaaaa)(mh=n6vv0k5WIWcAmpPN)15.jpg",
+        "https://ei.phncdn.com/videos/202112/16/399750871/original/(m=eGNdHgaaaWavb)(mh=VFyg2fBbUrgC1X3N)16.jpg",
+        "https://ei.phncdn.com/videos/202208/26/414436031/original/(m=eGNdHgaaaa)(mh=3pYqFUmDwIsECvu3)8.jpg",
+        ""
+        ];
+
+        const catalogoDiv = document.getElementById("catalogo-imagens");
+
+        let currentImageIndex = 0;
+
+        function embaralharArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // troca os elementos
+            }
+        }
+
+        function adicionarImagens() {
+            const endIndex = currentImageIndex + 9;
+            const imagensParaAdicionar = images.slice(currentImageIndex, endIndex);
+
+            imagensParaAdicionar.forEach((imageSrc) => {
+                const imagemContainer = document.createElement("div");
+                imagemContainer.classList.add("imagem-container-customizada");
+
+                const imagem = document.createElement("img");
+                imagem.src = imageSrc;
+                imagem.classList.add("imagem-catalogo-customizada");
+                imagem.addEventListener("click", () => abrirModal(imageSrc));
+
+                imagemContainer.appendChild(imagem);
+                catalogoDiv.appendChild(imagemContainer);
+                
+                // Delay para animação de fade in
+                setTimeout(() => {
+                    imagemContainer.style.opacity = 1;
+                    imagemContainer.style.transform = "translateY(0)";
+                }, 100);
+            });
+
+            currentImageIndex = endIndex;
+        }
+
+        function abrirModal(imageSrc) {
+            const modal = document.getElementById("modal-imagem-expandida");
+            const imagemExpandida = document.getElementById("imagem-expandida");
+            const downloadBtn = document.getElementById("download-btn");
+            
+            imagemExpandida.src = imageSrc;
+            downloadBtn.href = imageSrc;
+            
+            modal.style.display = "flex";
+        }
+
+        document.getElementById("fechar-modal").addEventListener("click", () => {
+            const modal = document.getElementById("modal-imagem-expandida");
+            modal.style.display = "none";
+        });
+
+        document.getElementById("modal-imagem-expandida").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) {
+                e.currentTarget.style.display = "none";
+            }
+        });
+
+        embaralharArray(images);
+        adicionarImagens(); // Carregar imagens aleatórias ao carregar a página
+
+        // Carregar novas imagens quando o botão for clicado
+        const carregarImagensBtn = document.getElementById("carregar-imagens");
+        carregarImagensBtn.addEventListener("click", adicionarImagens);
+document.addEventListener('DOMContentLoaded', function() {
+  // Evita que o modal abra automaticamente ao carregar o site
+  const modal = document.getElementById('modal-imagem-expandida');
+  modal.style.display = 'none'; // Garante que o modal esteja escondido inicialmente
+
+  // Adiciona evento de clique nas imagens para abrir o modal
+  document.querySelectorAll('.imagem-catalogo-customizada').forEach(imagem => {
+    imagem.addEventListener('click', function() {
+      const imagemExpandida = document.getElementById('imagem-expandida');
+      const downloadBtn = document.getElementById('download-btn');
+
+      // Define a imagem clicada no modal
+      imagemExpandida.src = this.src;
+      downloadBtn.href = this.src; // Atualiza o link de download
+
+      // Exibe o modal
+      modal.style.display = 'flex';
+    });
+  });
+
+  // Fechar modal ao clicar no 'X'
+  document.getElementById("fechar-modal").addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // Fechar modal ao clicar fora da imagem expandida
+  modal.addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      modal.style.display = "none";
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Seleciona todas as imagens que precisam da animação
+  const imagens = document.querySelectorAll('img'); // Altere 'img' se quiser selecionar imagens de uma classe específica
+
+  // Função para aplicar a animação
+  const aplicarAnimacao = () => {
+    imagens.forEach(imagem => {
+      imagem.classList.add('animate__animated', 'animate__fadeInUp');
+    });
+  };
+
+  // Adiciona a animação com delay de 2,5 segundos ou após 2 segundos de inatividade
+  let timer;
+  const carregarImagens = () => {
+    setTimeout(aplicarAnimacao, 2500); // Atraso para as animações
+  };
+
+  // Inicia a animação quando o conteúdo for carregado
+  carregarImagens();
+
+  // Detecta a inatividade do usuário (movimento do mouse ou digitação)
+  window.addEventListener('mousemove', () => {
+    clearTimeout(timer);
+    timer = setTimeout(carregarImagens, 2000); // 2 segundos após inatividade
+  });
+  window.addEventListener('keydown', () => {
+    clearTimeout(timer);
+    timer = setTimeout(carregarImagens, 2000); // 2 segundos após inatividade
+  });
+});
+    </script>
+</body>
+</html>
+   
+   
+   
+   
+   
+    
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Personalizado</title>
+
+    <style>
+        /* Fundo escuro do popup */
+        #custom-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: flex;
+        }
+
+        /* Conteúdo do popup */
+        .popup-content {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: #fff;
+            font-size: 18px;
+            box-shadow: 0 0 10px #000000;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .popup-content button {
+            margin-top: 10px;
+            background: black;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .popup-content button:hover {
+            background: #ff3366;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Popup personalizado -->
+    <div id="custom-popup">
+        <div class="popup-content">
+            <p>Este recurso está bloqueado nesta versão, mas pode ser adicionado em futuras atualizações.</p>
+            <button id="close-popup">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let popup = document.getElementById("custom-popup");
+            let downloadBtn = document.getElementById("download-btn");
+            let closeBtn = document.getElementById("close-popup");
+
+            // Abre o popup ao clicar no botão de download
+            downloadBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                popup.style.opacity = "1";
+                popup.style.visibility = "visible";
+            });
+
+            // Fecha o popup ao clicar no botão "Fechar"
+            closeBtn.addEventListener("click", function () {
+                popup.style.opacity = "0";
+                popup.style.visibility = "hidden";
+            });
+        });
+    </script>
+
+</body>
+</html>  
+        
+<!-- Botão de voltar para a tela inicial -->
+<button id="voltar-btn" onclick="voltarTelaInicial()">Voltar</button>
+
+<style>
+  #voltar-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    backdrop-filter: blur(10px);
+  }
+
+  #voltar-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  function voltarTelaInicial() {
+    document.getElementById("conteudo").classList.add("hidden");
+    document.getElementById("inicial").classList.remove("hidden");
+  }
+</script>
+
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup de Avisos Legais</title>
+
+    <style>
+        /* Fundo escuro do popup */
+        #popup-aviso {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: flex;
+        }
+
+        /* Conteúdo do popup */
+        .popup-content {
+            background-color: #fefefe;
+            padding: 20px;
+            color: black;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Botão de fechar */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Seção de Avisos Legais -->
+    <div class="aviso-legal">
+        <h4><a href="#" onclick="abrirPopup()">Política de Reembolso</a></h4>
+        <h4><a href="#" onclick="abrirPopup()">Termos de Uso</a></h4>
+    </div>
+
+    <!-- Popup para Avisos Legais -->
+    <div id="popup-aviso">
+        <div class="popup-content">
+            <span class="close" onclick="fecharPopup()">&times;</span>
+            <h4>Política de Reembolso</h4>
+            <p>De acordo com as políticas da nossa plataforma, não oferecemos reembolso após a compra, pois o conteúdo é disponibilizado digitalmente de imediato. Caso haja problemas com o acesso ou se o conteúdo não estiver conforme descrito, entre em contato com o suporte para resolução.</p>
+            <h4>Termos de Uso</h4>
+            <p>Ao acessar este catálogo, você concorda com os termos e condições de uso. Todos os direitos reservados. A distribuição ou revenda do conteúdo aqui disponibilizado é proibida.</p>
+        </div>
+    </div>
+
+    <script>
+        function abrirPopup() {
+            let popup = document.getElementById("popup-aviso");
+            popup.style.opacity = "1";
+            popup.style.visibility = "visible";
+        }
+
+        function fecharPopup() {
+            let popup = document.getElementById("popup-aviso");
+            popup.style.opacity = "0";
+            popup.style.visibility = "hidden";
+        }
+    </script>
+
+</body>
+</html>
+
+    <!-- Modal para imagem ampliada -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <img id="imagem-expandida" class="imagem-expandida" src="" alt="Imagem Ampliada">
+        </div>
+    </div>
+
+    <div class="footer">Conteúdo para maiores de 18 anos</div>
+    </div>
+
+
+
+    <footer class="footer">
+        <p></p>
+        <p><a href="mailto:seu-email@exemplo.com"></a></p>
+    </footer>
+
+
+
+</body>
+</html>
